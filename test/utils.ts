@@ -56,14 +56,14 @@ export function expectRectClose(
   maxDelta: number
 ) {
   expectPointClose(result, expectedBox, maxDelta)
-  expectPointClose({ x: result.width, y: result.height }, { x:expectedBox.width, y: expectedBox.height }, maxDelta)
+  expectPointClose({ x: result.width, y: result.height }, { x: expectedBox.width, y: expectedBox.height }, maxDelta)
 }
 
 export function sortByDistanceToOrigin<T>(objs: T[], originGetter: (obj: T) => IPoint) {
   const origin = { x: 0, y: 0 }
   return objs.sort((obj1, obj2) =>
     pointDistance(originGetter(obj1), origin)
-      - pointDistance(originGetter(obj2), origin)
+    - pointDistance(originGetter(obj2), origin)
   )
 }
 
@@ -178,39 +178,40 @@ export type DescribeWithNetsOptions = {
   withTinyYolov2?: WithTinyYolov2Options
 }
 
-const gpgpu = tf.backend()['gpgpu']
+// const gpgpu = tf.backend()['gpgpu']
 
-if (gpgpu) {
-  console.log('running tests on WebGL backend')
-} else {
-  console.log('running tests on CPU backend')
-}
+// if (gpgpu) {
+//   console.log('running tests on WebGL backend')
+// } else {
+//   console.log('running tests on CPU backend')
+// }
 
 export function describeWithBackend(description: string, specDefinitions: () => void) {
+  // if (!(gpgpu instanceof tf.webgl.GPGPUContext)) {
+  //   describe(description, specDefinitions)
+  //   return
+  // }
 
-  if (!(gpgpu instanceof tf.webgl.GPGPUContext)) {
-    describe(description, specDefinitions)
-    return
-  }
+  // const defaultBackendName = tf.getBackend()
+  // const newBackendName = 'testBackend'
+  // const backend = new tf.webgl.MathBackendWebGL(gpgpu)
 
-  const defaultBackendName = tf.getBackend()
-  const newBackendName = 'testBackend'
-  const backend = new tf.webgl.MathBackendWebGL(gpgpu)
+  // describe(description, () => {
+  //   beforeAll(() => {
+  //     tf.registerBackend(newBackendName, () => backend)
+  //     tf.setBackend(newBackendName)
+  //   })
 
-  describe(description, () => {
-    beforeAll(() => {
-      tf.registerBackend(newBackendName, () => backend)
-      tf.setBackend(newBackendName)
-    })
+  //   afterAll(() => {
+  //     tf.setBackend(defaultBackendName)
+  //     tf.removeBackend(newBackendName)
+  //     backend.dispose()
+  //   })
 
-    afterAll(() => {
-      tf.setBackend(defaultBackendName)
-      tf.removeBackend(newBackendName)
-      backend.dispose()
-    })
+  //   specDefinitions()
+  // })
 
-    specDefinitions()
-  })
+  describe(description, specDefinitions)
 }
 
 export function describeWithNets(
@@ -260,7 +261,7 @@ export function describeWithNets(
         )
       }
 
-      if (withFaceLandmark68Net || withAllFacesSsdMobilenetv1  || withAllFacesTinyFaceDetector || withAllFacesTinyYolov2) {
+      if (withFaceLandmark68Net || withAllFacesSsdMobilenetv1 || withAllFacesTinyFaceDetector || withAllFacesTinyYolov2) {
         await getTestEnv().initNet<FaceLandmark68Net>(
           faceLandmark68Net,
           !!withFaceLandmark68Net && !withFaceLandmark68Net.quantized && 'face_landmark_68_model.weights'
@@ -274,7 +275,7 @@ export function describeWithNets(
         )
       }
 
-      if (withFaceRecognitionNet || withAllFacesSsdMobilenetv1  || withAllFacesTinyFaceDetector || withAllFacesTinyYolov2) {
+      if (withFaceRecognitionNet || withAllFacesSsdMobilenetv1 || withAllFacesTinyFaceDetector || withAllFacesTinyYolov2) {
         await getTestEnv().initNet<FaceRecognitionNet>(
           faceRecognitionNet,
           !!withFaceRecognitionNet && !withFaceRecognitionNet.quantized && 'face_recognition_model.weights'
