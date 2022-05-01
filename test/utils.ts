@@ -11,7 +11,6 @@ import {
   IPoint,
   IRect,
   LabeledBox,
-  Mtcnn,
   nets,
   PredictedBox,
   SsdMobilenetv1,
@@ -160,7 +159,6 @@ export type InjectNetArgs = {
   faceLandmark68Net: FaceLandmark68Net
   faceLandmark68TinyNet: FaceLandmark68TinyNet
   faceRecognitionNet: FaceRecognitionNet
-  mtcnn: Mtcnn
   faceExpressionNet: FaceExpressionNet
   ageGenderNet: AgeGenderNet
   tinyYolov2: TinyYolov2
@@ -170,13 +168,11 @@ export type DescribeWithNetsOptions = {
   withAllFacesSsdMobilenetv1?: boolean
   withAllFacesTinyFaceDetector?: boolean
   withAllFacesTinyYolov2?: boolean
-  withAllFacesMtcnn?: boolean
   withSsdMobilenetv1?: WithNetOptions
   withTinyFaceDetector?: WithNetOptions
   withFaceLandmark68Net?: WithNetOptions
   withFaceLandmark68TinyNet?: WithNetOptions
   withFaceRecognitionNet?: WithNetOptions
-  withMtcnn?: WithNetOptions
   withFaceExpressionNet?: WithNetOptions
   withAgeGenderNet?: WithNetOptions
   withTinyYolov2?: WithTinyYolov2Options
@@ -230,7 +226,6 @@ export function describeWithNets(
       faceLandmark68Net,
       faceLandmark68TinyNet,
       faceRecognitionNet,
-      mtcnn,
       faceExpressionNet,
       ageGenderNet,
       tinyYolov2
@@ -241,13 +236,11 @@ export function describeWithNets(
         withAllFacesSsdMobilenetv1,
         withAllFacesTinyFaceDetector,
         withAllFacesTinyYolov2,
-        withAllFacesMtcnn,
         withSsdMobilenetv1,
         withTinyFaceDetector,
         withFaceLandmark68Net,
         withFaceLandmark68TinyNet,
         withFaceRecognitionNet,
-        withMtcnn,
         withFaceExpressionNet,
         withAgeGenderNet,
         withTinyYolov2
@@ -267,7 +260,7 @@ export function describeWithNets(
         )
       }
 
-      if (withFaceLandmark68Net || withAllFacesSsdMobilenetv1  || withAllFacesTinyFaceDetector|| withAllFacesMtcnn || withAllFacesTinyYolov2) {
+      if (withFaceLandmark68Net || withAllFacesSsdMobilenetv1  || withAllFacesTinyFaceDetector || withAllFacesTinyYolov2) {
         await getTestEnv().initNet<FaceLandmark68Net>(
           faceLandmark68Net,
           !!withFaceLandmark68Net && !withFaceLandmark68Net.quantized && 'face_landmark_68_model.weights'
@@ -281,17 +274,10 @@ export function describeWithNets(
         )
       }
 
-      if (withFaceRecognitionNet || withAllFacesSsdMobilenetv1  || withAllFacesTinyFaceDetector|| withAllFacesMtcnn || withAllFacesTinyYolov2) {
+      if (withFaceRecognitionNet || withAllFacesSsdMobilenetv1  || withAllFacesTinyFaceDetector || withAllFacesTinyYolov2) {
         await getTestEnv().initNet<FaceRecognitionNet>(
           faceRecognitionNet,
           !!withFaceRecognitionNet && !withFaceRecognitionNet.quantized && 'face_recognition_model.weights'
-        )
-      }
-
-      if (withMtcnn || withAllFacesMtcnn) {
-        await getTestEnv().initNet<Mtcnn>(
-          mtcnn,
-          !!withMtcnn && !withMtcnn.quantized && 'mtcnn_model.weights'
         )
       }
 
@@ -324,7 +310,6 @@ export function describeWithNets(
       ssdMobilenetv1.isLoaded && ssdMobilenetv1.dispose()
       faceLandmark68Net.isLoaded && faceLandmark68Net.dispose()
       faceRecognitionNet.isLoaded && faceRecognitionNet.dispose()
-      mtcnn.isLoaded && mtcnn.dispose()
       tinyFaceDetector.isLoaded && tinyFaceDetector.dispose()
       tinyYolov2.isLoaded && tinyYolov2.dispose()
       faceExpressionNet.isLoaded && faceExpressionNet.dispose()
@@ -336,7 +321,6 @@ export function describeWithNets(
       faceLandmark68Net,
       faceLandmark68TinyNet,
       faceRecognitionNet,
-      mtcnn,
       faceExpressionNet,
       ageGenderNet,
       tinyYolov2

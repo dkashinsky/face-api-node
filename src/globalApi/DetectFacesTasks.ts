@@ -1,7 +1,6 @@
 import { FaceDetection } from '../classes/FaceDetection';
 import { TNetInput } from '../dom';
 import { extendWithFaceDetection, WithFaceDetection } from '../factories/WithFaceDetection';
-import { MtcnnOptions } from '../mtcnn/MtcnnOptions';
 import { SsdMobilenetv1Options } from '../ssdMobilenetv1/SsdMobilenetv1Options';
 import { TinyFaceDetectorOptions } from '../tinyFaceDetector/TinyFaceDetectorOptions';
 import { TinyYolov2Options } from '../tinyYolov2';
@@ -27,11 +26,6 @@ export class DetectAllFacesTask extends DetectFacesTaskBase<FaceDetection[]> {
 
     const { input, options } = this
 
-    if (options instanceof MtcnnOptions) {
-      return (await nets.mtcnn.forward(input, options))
-        .map(result => result.detection)
-    }
-
     const faceDetectionFunction = options instanceof TinyFaceDetectorOptions
       ? (input: TNetInput) => nets.tinyFaceDetector.locateFaces(input, options)
       : (
@@ -45,7 +39,7 @@ export class DetectAllFacesTask extends DetectFacesTaskBase<FaceDetection[]> {
       )
 
     if (!faceDetectionFunction) {
-      throw new Error('detectFaces - expected options to be instance of TinyFaceDetectorOptions | SsdMobilenetv1Options | MtcnnOptions | TinyYolov2Options')
+      throw new Error('detectFaces - expected options to be instance of TinyFaceDetectorOptions | SsdMobilenetv1Options | TinyYolov2Options')
     }
 
     return faceDetectionFunction(input)
@@ -94,8 +88,8 @@ export class DetectSingleFaceTask extends DetectFacesTaskBase<FaceDetection | un
     return faceDetectionWithHighestScore;
   }
 
-  private runAndExtendWithFaceDetection(): Promise<WithFaceDetection<{}>> {
-    return new Promise<WithFaceDetection<{}>>(async res => {
+  private runAndExtendWithFaceDetection(): Promise<WithFaceDetection<{}> | undefined> {
+    return new Promise<WithFaceDetection<{}> | undefined>(async res => {
       const detection = await this.run()
       return res(detection ? extendWithFaceDetection<{}>({}, detection) : undefined)
     })

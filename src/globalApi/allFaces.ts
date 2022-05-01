@@ -1,6 +1,5 @@
 import { TNetInput } from '../dom';
 import { WithFaceDescriptor, WithFaceDetection, WithFaceLandmarks } from '../factories';
-import { IMtcnnOptions, MtcnnOptions } from '../mtcnn/MtcnnOptions';
 import { SsdMobilenetv1Options } from '../ssdMobilenetv1';
 import { ITinyYolov2Options, TinyYolov2Options } from '../tinyYolov2';
 import { detectAllFaces } from './detectFaces';
@@ -23,16 +22,6 @@ export async function allFacesTinyYolov2(
 ): Promise<WithFaceDescriptor<WithFaceLandmarks<WithFaceDetection<{}>>>[]> {
   console.warn('allFacesTinyYolov2 is deprecated and will be removed soon, use the high level api instead')
   return await detectAllFaces(input, new TinyYolov2Options(forwardParams))
-    .withFaceLandmarks()
-    .withFaceDescriptors()
-}
-
-export async function allFacesMtcnn(
-  input: TNetInput,
-  forwardParams: IMtcnnOptions = {}
-): Promise<WithFaceDescriptor<WithFaceLandmarks<WithFaceDetection<{}>>>[]> {
-  console.warn('allFacesMtcnn is deprecated and will be removed soon, use the high level api instead')
-  return await detectAllFaces(input, new MtcnnOptions(forwardParams))
     .withFaceLandmarks()
     .withFaceDescriptors()
 }

@@ -18,7 +18,6 @@ export * from './faceLandmarkNet/index';
 export * from './faceRecognitionNet/index';
 export * from './factories/index';
 export * from './globalApi/index';
-export * from './mtcnn/index';
 export * from './ops/index';
 export * from './ssdMobilenetv1/index';
 export * from './tinyFaceDetector/index';
