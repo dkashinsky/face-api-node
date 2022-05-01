@@ -1,7 +1,6 @@
 import { AgeGenderNet } from '../ageGenderNet/AgeGenderNet';
 import { AgeAndGenderPrediction } from '../ageGenderNet/types';
 import { FaceDetection } from '../classes/FaceDetection';
-import { FaceLandmarks5 } from '../classes/FaceLandmarks5';
 import { FaceLandmarks68 } from '../classes/FaceLandmarks68';
 import { TNetInput } from '../dom';
 import { FaceExpressionNet } from '../faceExpressionNet/FaceExpressionNet';
@@ -9,10 +8,6 @@ import { FaceExpressions } from '../faceExpressionNet/FaceExpressions';
 import { FaceLandmark68Net } from '../faceLandmarkNet/FaceLandmark68Net';
 import { FaceLandmark68TinyNet } from '../faceLandmarkNet/FaceLandmark68TinyNet';
 import { FaceRecognitionNet } from '../faceRecognitionNet/FaceRecognitionNet';
-import { WithFaceDetection } from '../factories/WithFaceDetection';
-import { WithFaceLandmarks } from '../factories/WithFaceLandmarks';
-import { Mtcnn } from '../mtcnn/Mtcnn';
-import { MtcnnOptions } from '../mtcnn/MtcnnOptions';
 import { SsdMobilenetv1 } from '../ssdMobilenetv1/SsdMobilenetv1';
 import { SsdMobilenetv1Options } from '../ssdMobilenetv1/SsdMobilenetv1Options';
 import { TinyFaceDetector } from '../tinyFaceDetector/TinyFaceDetector';
@@ -23,7 +18,6 @@ export const nets = {
   ssdMobilenetv1: new SsdMobilenetv1(),
   tinyFaceDetector: new TinyFaceDetector(),
   tinyYolov2: new TinyYolov2(),
-  mtcnn: new Mtcnn(),
   faceLandmark68Net: new FaceLandmark68Net(),
   faceLandmark68TinyNet: new FaceLandmark68TinyNet(),
   faceRecognitionNet: new FaceRecognitionNet(),
@@ -60,17 +54,6 @@ export const tinyFaceDetector = (input: TNetInput, options: TinyFaceDetectorOpti
  */
 export const tinyYolov2 = (input: TNetInput, options: ITinyYolov2Options): Promise<FaceDetection[]> =>
   nets.tinyYolov2.locateFaces(input, options)
-
-/**
- * Attempts to detect all faces in an image and the 5 point face landmarks
- * of each detected face using the MTCNN Network.
- *
- * @param input The input image.
- * @param options (optional, default: see MtcnnOptions constructor for default parameters).
- * @returns Bounding box of each face with score and 5 point face landmarks.
- */
-export const mtcnn = (input: TNetInput, options: MtcnnOptions): Promise<WithFaceLandmarks<WithFaceDetection<{}>, FaceLandmarks5>[]> =>
-  nets.mtcnn.forward(input, options)
 
 /**
  * Detects the 68 point face landmark positions of the face shown in an image.
@@ -130,7 +113,6 @@ export const predictAgeAndGender = (input: TNetInput): Promise<AgeAndGenderPredi
 
 export const loadSsdMobilenetv1Model = (url: string) => nets.ssdMobilenetv1.load(url)
 export const loadTinyFaceDetectorModel = (url: string) => nets.tinyFaceDetector.load(url)
-export const loadMtcnnModel = (url: string) => nets.mtcnn.load(url)
 export const loadTinyYolov2Model = (url: string) => nets.tinyYolov2.load(url)
 export const loadFaceLandmarkModel = (url: string) => nets.faceLandmark68Net.load(url)
 export const loadFaceLandmarkTinyModel = (url: string) => nets.faceLandmark68TinyNet.load(url)
