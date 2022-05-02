@@ -9,7 +9,8 @@ async function loadImage(uri: string): Promise<Buffer> {
 }
 
 async function loadJson<T>(uri: string): Promise<T> {
-  return JSON.parse(await readFile(path.resolve(__dirname, '../', uri)).toString())
+  const content = await readFile(path.resolve(__dirname, '../', uri), 'utf8')
+  return JSON.parse(content)
 }
 
 export async function initNet<TNet extends NeuralNetwork<any>>(net: TNet) {

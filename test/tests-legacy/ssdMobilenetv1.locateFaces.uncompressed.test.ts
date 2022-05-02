@@ -1,21 +1,25 @@
-import * as faceapi from '../../src';
-import { getTestEnv } from '../env';
+import * as tf from '@tensorflow/tfjs-node';
+import { nodeTestEnv } from '../env';
 import { expectFaceDetections } from '../expectFaceDetections';
 import { describeWithBackend, describeWithNets } from '../utils';
 import { expectedSsdBoxes } from '../tests/ssdMobilenetv1/expectedBoxes';
 
 describeWithBackend('ssdMobilenetv1.locateFaces, uncompressed', () => {
 
-  let imgEl: HTMLImageElement
+  let imgEl: tf.Tensor3D
 
   beforeAll(async () => {
-    imgEl = await getTestEnv().loadImage('test/images/faces.jpg')
+    imgEl = tf.node.decodeJpeg(await nodeTestEnv.loadImage('test/images/faces.jpg'))
+  })
+
+  afterAll(() => {
+    imgEl.dispose()
   })
 
   describeWithNets('uncompressed weights', { withSsdMobilenetv1: { quantized: false } }, ({ ssdMobilenetv1 }) => {
 
     it('scores > 0.8', async () => {
-      const detections = await ssdMobilenetv1.locateFaces(imgEl, { minConfidence: 0.8 }) as faceapi.FaceDetection[]
+      const detections = await ssdMobilenetv1.locateFaces(imgEl, { minConfidence: 0.8 })
 
       expect(detections.length).toEqual(3)
 
@@ -27,7 +31,7 @@ describeWithBackend('ssdMobilenetv1.locateFaces, uncompressed', () => {
     })
 
     it('scores > 0.5', async () => {
-      const detections = await ssdMobilenetv1.locateFaces(imgEl, { minConfidence: 0.5 }) as faceapi.FaceDetection[]
+      const detections = await ssdMobilenetv1.locateFaces(imgEl, { minConfidence: 0.5 })
 
       expect(detections.length).toEqual(6)
 

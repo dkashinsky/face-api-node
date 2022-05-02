@@ -170,58 +170,66 @@ describe('NeuralNetwork', () => {
 
   describe('dispose', () => {
 
-    it('disposes all param tensors', () => tf.tidy(() => {
-      const numTensors = tf.memory().numTensors
-      const net = new FakeNeuralNetwork()
+    it('disposes all param tensors', () => {
+      tf.tidy(() => {
+        const numTensors = tf.memory().numTensors
+        const net = new FakeNeuralNetwork()
 
-      net.dispose()
+        net.dispose()
 
-      expect(net.params).toBe(undefined)
-      expect(tf.memory().numTensors - numTensors).toEqual(0)
-    }))
+        expect(net.params).toBe(undefined)
+        expect(tf.memory().numTensors - numTensors).toEqual(0)
+      })
+    })
 
   })
 
   describe('variable', () => {
 
-    it('make all param tensors trainable', () => tf.tidy(() => {
-      const net = new FakeNeuralNetwork()
+    it('make all param tensors trainable', () => {
+      tf.tidy(() => {
+        const net = new FakeNeuralNetwork()
 
-      net.variable()
+        net.variable()
 
-      expect(net.params.conv.filter instanceof tf.Variable).toBe(true)
-      expect(net.params.conv.bias instanceof tf.Variable).toBe(true)
-      expect(net.params.fc instanceof tf.Variable).toBe(true)
-    }))
+        expect(net.params.conv.filter instanceof tf.Variable).toBe(true)
+        expect(net.params.conv.bias instanceof tf.Variable).toBe(true)
+        expect(net.params.fc instanceof tf.Variable).toBe(true)
+      })
+    })
 
-    it('disposes old tensors', () => tf.tidy(() => {
-      const net = new FakeNeuralNetwork()
-      const numTensors = tf.memory().numTensors
+    it('disposes old tensors', () => {
+      tf.tidy(() => {
+        const net = new FakeNeuralNetwork()
+        const numTensors = tf.memory().numTensors
 
-      net.variable()
+        net.variable()
 
-      expect(tf.memory().numTensors - numTensors).toEqual(0)
-    }))
+        expect(tf.memory().numTensors - numTensors).toEqual(0)
+      })
+    })
 
   })
 
   describe('freeze', () => {
 
-    it('freezes all param variables', () => tf.tidy(() => {
-      const net = new FakeNeuralNetwork(
-        tf.variable(tf.scalar(0)),
-        tf.variable(tf.scalar(0)),
-        tf.variable(tf.scalar(0))
-      )
+    it('freezes all param variables', () => {
+      tf.tidy(() => {
+        const net = new FakeNeuralNetwork(
+          tf.variable(tf.scalar(0)),
+          tf.variable(tf.scalar(0)),
+          tf.variable(tf.scalar(0))
+        )
 
-      net.freeze()
+        net.freeze()
 
-      expect(net.params.conv.filter instanceof tf.Variable).toBe(false)
-      expect(net.params.conv.bias instanceof tf.Variable).toBe(false)
-      expect(net.params.fc instanceof tf.Variable).toBe(false)
-    }))
+        expect(net.params.conv.filter instanceof tf.Variable).toBe(false)
+        expect(net.params.conv.bias instanceof tf.Variable).toBe(false)
+        expect(net.params.fc instanceof tf.Variable).toBe(false)
+      })
+    })
 
-    it('disposes old tensors', () => () => {
+    it('disposes old tensors', () => {
       const net = new FakeNeuralNetwork(
         tf.variable(tf.scalar(0)),
         tf.variable(tf.scalar(0)),

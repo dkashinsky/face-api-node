@@ -1,19 +1,20 @@
-import { createCanvasFromMedia, euclideanDistance } from '../../src';
-import { getTestEnv } from '../env';
+import * as tf from '@tensorflow/tfjs-node';
+import { euclideanDistance } from '../../src';
+import { nodeTestEnv } from '../env';
 import { describeWithBackend, describeWithNets } from '../utils';
 
 describeWithBackend('faceRecognitionNet, uncompressed', () => {
 
-  let imgEl1: HTMLCanvasElement
-  let imgElRect: HTMLCanvasElement
+  let imgEl1: tf.Tensor3D
+  let imgElRect: tf.Tensor3D
   let faceDescriptor1: number[]
   let faceDescriptorRect: number[]
 
   beforeAll(async () => {
-    imgEl1 = createCanvasFromMedia(await getTestEnv().loadImage('test/images/face1.png'))
-    imgElRect = createCanvasFromMedia(await getTestEnv().loadImage('test/images/face_rectangular.png'))
-    faceDescriptor1 = await getTestEnv().loadJson<number[]>('test/data/faceDescriptor1.json')
-    faceDescriptorRect = await getTestEnv().loadJson<number[]>('test/data/faceDescriptorRect.json')
+    imgEl1 = tf.node.decodePng(await nodeTestEnv.loadImage('test/images/face1.png'))
+    imgElRect = tf.node.decodePng(await nodeTestEnv.loadImage('test/images/face_rectangular.png'))
+    faceDescriptor1 = await nodeTestEnv.loadJson<number[]>('test/data/faceDescriptor1.json')
+    faceDescriptorRect = await nodeTestEnv.loadJson<number[]>('test/data/faceDescriptorRect.json')
   })
 
   describeWithNets('uncompressed weights', { withFaceRecognitionNet: { quantized: false } }, ({ faceRecognitionNet }) => {
