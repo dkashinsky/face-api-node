@@ -1,3 +1,4 @@
+import * as tf from '@tensorflow/tfjs-node';
 import * as faceapi from '../../../src';
 import { describeWithNets, expectAllTensorsReleased, assembleExpectedFullFaceDescriptions, ExpectedFullFaceDescription, describeWithBackend } from '../../utils';
 import { SsdMobilenetv1Options } from '../../../src';
@@ -5,16 +6,16 @@ import { expectFaceDetections } from '../../expectFaceDetections';
 import { expectFullFaceDescriptions } from '../../expectFullFaceDescriptions';
 import { expectFaceDetectionsWithLandmarks } from '../../expectFaceDetectionsWithLandmarks';
 import { expectedSsdBoxes } from './expectedBoxes';
-import { getTestEnv } from '../../env';
+import { nodeTestEnv } from '../../env';
 
 describeWithBackend('ssdMobilenetv1', () => {
 
-  let imgEl: HTMLImageElement
+  let imgEl: tf.Tensor3D
   let expectedFullFaceDescriptions: ExpectedFullFaceDescription[]
   const expectedScores = [0.54, 0.81, 0.97, 0.88, 0.84, 0.61]
 
   beforeAll(async () => {
-    imgEl = await getTestEnv().loadImage('test/images/faces.jpg')
+    imgEl = tf.node.decodeJpeg(await nodeTestEnv.loadImage('test/images/faces.jpg'))
     expectedFullFaceDescriptions = await assembleExpectedFullFaceDescriptions(expectedSsdBoxes)
   })
 

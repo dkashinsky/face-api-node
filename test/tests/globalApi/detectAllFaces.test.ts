@@ -1,5 +1,6 @@
+import * as tf from '@tensorflow/tfjs-node';
 import { WithAge, detectAllFaces, WithFaceExpressions, WithFaceDetection, WithGender } from '../../../src';
-import { getTestEnv } from '../../env';
+import { nodeTestEnv } from '../../env';
 import { expectedTinyFaceDetectorBoxes } from '../../expectedTinyFaceDetectorBoxes';
 import { expectFaceDetectionsWithLandmarks } from '../../expectFaceDetectionsWithLandmarks';
 import { expectFullFaceDescriptions } from '../../expectFullFaceDescriptions';
@@ -41,11 +42,11 @@ function expectAgesAndGender(results: WithAge<WithGender<WithFaceDetection<{}>>>
 
 describeWithBackend('globalApi', () => {
 
-  let imgEl: HTMLImageElement
+  let imgEl: tf.Tensor3D
   let expectedFullFaceDescriptions: ExpectedFullFaceDescription[]
 
   beforeAll(async () => {
-    imgEl = await getTestEnv().loadImage('test/images/faces.jpg')
+    imgEl = tf.node.decodeJpeg(await nodeTestEnv.loadImage('test/images/faces.jpg'))
     expectedFullFaceDescriptions = await assembleExpectedFullFaceDescriptions(expectedTinyFaceDetectorBoxes)
   })
 

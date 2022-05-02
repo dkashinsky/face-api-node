@@ -1,15 +1,16 @@
+import * as tf from '@tensorflow/tfjs-node';
 import * as faceapi from '../../../src';
-import { getTestEnv } from '../../env';
+import { nodeTestEnv } from '../../env';
 import { expectedTinyFaceDetectorBoxes } from '../../expectedTinyFaceDetectorBoxes';
 import { expectFaceDetections } from '../../expectFaceDetections';
 import { describeWithBackend, describeWithNets } from '../../utils';
 
 describeWithBackend('tinyFaceDetector.locateFaces', () => {
 
-  let imgEl: HTMLImageElement
+  let imgEl: tf.Tensor3D
 
   beforeAll(async () => {
-    imgEl = await getTestEnv().loadImage('test/images/faces.jpg')
+    imgEl = tf.node.decodeJpeg(await nodeTestEnv.loadImage('test/images/faces.jpg'))
   })
 
   describeWithNets('quantized weights', { withTinyFaceDetector: { quantized: true } }, ({ tinyFaceDetector }) => {

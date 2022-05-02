@@ -1,15 +1,16 @@
+import * as tf from '@tensorflow/tfjs-node';
 import * as faceapi from '../../../src';
-import { getTestEnv } from '../../env';
+import { nodeTestEnv } from '../../env';
 import { expectFaceDetections } from '../../expectFaceDetections';
 import { describeWithBackend, describeWithNets } from '../../utils';
 import { expectedSsdBoxes } from './expectedBoxes';
 
 describeWithBackend('ssdMobilenetv1.locateFaces', () => {
 
-  let imgEl: HTMLImageElement
+  let imgEl: tf.Tensor3D
 
   beforeAll(async () => {
-    imgEl = await getTestEnv().loadImage('test/images/faces.jpg')
+    imgEl = tf.node.decodeJpeg(await nodeTestEnv.loadImage('test/images/faces.jpg'))
   })
 
   describeWithNets('quantized weights', { withSsdMobilenetv1: { quantized: true } }, ({ ssdMobilenetv1 }) => {

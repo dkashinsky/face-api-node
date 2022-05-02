@@ -1,3 +1,4 @@
+import * as tf from '@tensorflow/tfjs-node';
 import * as faceapi from '../../../src';
 import { describeWithNets, expectAllTensorsReleased, assembleExpectedFullFaceDescriptions, ExpectedFullFaceDescription, describeWithBackend } from '../../utils';
 import { TinyFaceDetectorOptions } from '../../../src';
@@ -5,11 +6,11 @@ import { expectFaceDetections } from '../../expectFaceDetections';
 import { expectFullFaceDescriptions } from '../../expectFullFaceDescriptions';
 import { expectFaceDetectionsWithLandmarks } from '../../expectFaceDetectionsWithLandmarks';
 import { expectedTinyFaceDetectorBoxes } from '../../expectedTinyFaceDetectorBoxes';
-import { getTestEnv } from '../../env';
+import { nodeTestEnv } from '../../env';
 
 describeWithBackend('tinyFaceDetector', () => {
 
-  let imgEl: HTMLImageElement
+  let imgEl: tf.Tensor3D
   let expectedFullFaceDescriptions: ExpectedFullFaceDescription[]
   const expectedScores = [0.7, 0.82, 0.93, 0.86, 0.79, 0.84]
   const deltas = {
@@ -20,7 +21,7 @@ describeWithBackend('tinyFaceDetector', () => {
   }
 
   beforeAll(async () => {
-    imgEl = await getTestEnv().loadImage('test/images/faces.jpg')
+    imgEl = tf.node.decodeJpeg(await nodeTestEnv.loadImage('test/images/faces.jpg'))
     expectedFullFaceDescriptions = await assembleExpectedFullFaceDescriptions(expectedTinyFaceDetectorBoxes)
   })
 

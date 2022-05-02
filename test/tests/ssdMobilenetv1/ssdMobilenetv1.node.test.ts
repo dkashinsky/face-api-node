@@ -1,12 +1,12 @@
+import * as tf from '@tensorflow/tfjs-node';
 import * as faceapi from '../../../src';
 import { describeWithNets, expectAllTensorsReleased, assembleExpectedFullFaceDescriptions, ExpectedFullFaceDescription } from '../../utils';
-import { SsdMobilenetv1Options, createCanvasFromMedia } from '../../../src';
+import { SsdMobilenetv1Options } from '../../../src';
 import { expectFaceDetections } from '../../expectFaceDetections';
 import { expectFullFaceDescriptions } from '../../expectFullFaceDescriptions';
 import { expectFaceDetectionsWithLandmarks } from '../../expectFaceDetectionsWithLandmarks';
 import { expectedSsdBoxes } from './expectedBoxes';
-import * as tf from '@tensorflow/tfjs-node';
-import { getTestEnv } from '../../env';
+import { nodeTestEnv } from '../../env';
 
 describe('ssdMobilenetv1 - node', () => {
 
@@ -15,7 +15,7 @@ describe('ssdMobilenetv1 - node', () => {
   const expectedScores = [0.54, 0.81, 0.97, 0.88, 0.84, 0.61]
 
   beforeAll(async () => {
-    imgTensor = tf.browser.fromPixels(createCanvasFromMedia(await getTestEnv().loadImage('test/images/faces.jpg')))
+    imgTensor = tf.node.decodeJpeg(await nodeTestEnv.loadImage('test/images/faces.jpg'))
     expectedFullFaceDescriptions = await assembleExpectedFullFaceDescriptions(expectedSsdBoxes)
   })
 

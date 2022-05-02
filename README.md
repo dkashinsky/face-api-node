@@ -66,16 +66,6 @@ Clone the repository:
 git clone https://github.com/justadudewhohacks/face-api.js.git
 ```
 
-## Running the Browser Examples
-
-``` bash
-cd face-api.js/examples/examples-browser
-npm i
-npm start
-```
-
-Browse to http://localhost:3000/.
-
 ## Running the Nodejs Examples
 
 ``` bash
@@ -96,18 +86,6 @@ tsc faceDetection.ts
 node faceDetection.js
 ```
 
-<a name="face-api.js-for-the-browser"></a>
-
-# face-api.js for the Browser
-
-Simply include the latest script from [dist/face-api.js](https://github.com/justadudewhohacks/face-api.js/tree/master/dist).
-
-Or install it via npm:
-
-``` bash
-npm i face-api.js
-```
-
 <a name="face-api.js-for-nodejs"></a>
 
 # face-api.js for Nodejs
@@ -119,17 +97,16 @@ Alternatively you can simply construct your own tensors from image data and pass
 Furthermore you want to install @tensorflow/tfjs-node (not required, but highly recommended), which speeds things up drastically by compiling and binding to the native Tensorflow C++ library:
 
 ``` bash
-npm i face-api.js canvas @tensorflow/tfjs-node
+npm i face-api-node @tensorflow/tfjs-node
 ```
 
-Now we simply monkey patch the environment to use the polyfills:
 
 ``` javascript
 // import nodejs bindings to native tensorflow,
 // not required, but will speed up things drastically (python required)
 import '@tensorflow/tfjs-node';
 
-import * as faceapi from 'face-api.js';
+import * as faceapi from 'face-api-node';
 ```
 
 <a name="getting-started"></a>
