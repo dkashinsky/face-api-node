@@ -1,4 +1,4 @@
-import { BoundingBox } from '../../../src/classes/BoundingBox';
+import { BoundingBox } from "../../../src"
 
 describe('BoundingBox', () => {
 

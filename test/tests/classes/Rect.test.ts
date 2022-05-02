@@ -1,5 +1,4 @@
-import { Box } from '../../../src/classes/Box';
-import { Rect } from '../../../src/classes/Rect';
+import { Box, Rect } from "../../../src"
 
 describe('Rect', () => {
 
