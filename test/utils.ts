@@ -91,12 +91,12 @@ export function fakeTensor3d(dtype: tf.DataType = 'int32') {
   return tf.tensor3d([0], [1, 1, 1], dtype)
 }
 
-export function zeros(length: number): Float32Array {
-  return new Float32Array(length)
+export function zeros(length: number) {
+  return tf.fill([length], 0, 'float32').dataSync();
 }
 
-export function ones(length: number): Float32Array {
-  return new Float32Array(length).fill(1)
+export function ones(length: number) {
+  return tf.fill([length], 1, 'float32').dataSync();
 }
 
 export function createLabeledBox(
