@@ -1,7 +1,7 @@
 import * as tf from '@tensorflow/tfjs-core';
 
 import { FaceLandmarks68 } from '../classes/FaceLandmarks68';
-import { extractFaces, extractFaceTensors, TNetInput } from '../dom';
+import { extractFaceTensors, TNetInput, TResolvedNetInput } from '../core';
 import { FaceLandmark68Net } from '../faceLandmarkNet/FaceLandmark68Net';
 import { FaceLandmark68TinyNet } from '../faceLandmarkNet/FaceLandmark68TinyNet';
 import { WithFaceDetection } from '../factories/WithFaceDetection';
@@ -43,9 +43,7 @@ export class DetectAllFaceLandmarksTask<
     const parentResults = await this.parentTask
     const detections = parentResults.map(res => res.detection)
 
-    const faces: Array<HTMLCanvasElement | tf.Tensor3D> = this.input instanceof tf.Tensor
-      ? await extractFaceTensors(this.input, detections)
-      : await extractFaces(this.input, detections)
+    const faces: Array<tf.Tensor3D> = await extractFaceTensors(this.input, detections)
 
     const faceLandmarksByFace = await Promise.all(faces.map(
       face => this.landmarkNet.detectLandmarks(face)
@@ -83,9 +81,7 @@ export class DetectSingleFaceLandmarksTask<
     }
 
     const { detection } = parentResult
-    const faces: Array<HTMLCanvasElement | tf.Tensor3D> = this.input instanceof tf.Tensor
-      ? await extractFaceTensors(this.input, [detection])
-      : await extractFaces(this.input, [detection])
+    const faces: Array<tf.Tensor3D> = await extractFaceTensors(this.input, [detection])
 
     const landmarks = await this.landmarkNet.detectLandmarks(faces[0]) as FaceLandmarks68
 

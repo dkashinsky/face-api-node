@@ -1,6 +1,6 @@
 import * as tf from '@tensorflow/tfjs-core';
 
-import { NetInput, TNetInput, toNetInput } from '../dom';
+import { NetInput, TNetInput, toNetInput } from '../core';
 import { NeuralNetwork } from '../NeuralNetwork';
 import { normalize } from '../ops';
 import { convDown } from './convLayer';
@@ -51,10 +51,10 @@ export class FaceRecognitionNet extends NeuralNetwork<NetParams> {
       out = residual(out, params.conv256_2)
       out = residualDown(out, params.conv256_down_out)
 
-      const globalAvg = out.mean([1, 2]) as tf.Tensor2D
+      const globalAvg = out.mean([1, 2])
       const fullyConnected = tf.matMul(globalAvg, params.fc)
 
-      return fullyConnected
+      return fullyConnected as tf.Tensor2D
     })
   }
 

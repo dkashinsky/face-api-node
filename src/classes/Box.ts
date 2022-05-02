@@ -89,8 +89,8 @@ export class Box<BoxType = any> implements IBoundingBox, IRect {
   }
 
   public rescale(s: IDimensions | number): Box<BoxType> {
-    const scaleX = isDimensions(s) ? (s as IDimensions).width : s as number
-    const scaleY = isDimensions(s) ? (s as IDimensions).height : s as number
+    const scaleX = isDimensions(s) ? s.width : s
+    const scaleY = isDimensions(s) ? s.height : s
     return new Box({
       x: this.x * scaleX,
       y: this.y * scaleY,

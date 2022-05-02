@@ -5,9 +5,9 @@ import { Dimensions } from '../classes/Dimensions';
 import { ObjectDetection } from '../classes/ObjectDetection';
 import { convLayer } from '../common';
 import { ConvParams, SeparableConvParams } from '../common/types';
-import { toNetInput } from '../dom';
-import { NetInput } from '../dom/NetInput';
-import { TNetInput } from '../dom/types';
+import { toNetInput } from '../core';
+import { NetInput } from '../core/NetInput';
+import { TNetInput } from '../core/types';
 import { NeuralNetwork } from '../NeuralNetwork';
 import { sigmoid } from '../ops';
 import { nonMaxSuppression } from '../ops/nonMaxSuppression';
@@ -202,8 +202,8 @@ export class TinyYolov2Base extends NeuralNetwork<TinyYolov2NetParams> {
 
     const results = []
 
-    const scoresData = await scoresTensor.array()
-    const boxesData = await boxesTensor.array()
+    const scoresData = await scoresTensor.array() as number[][][][]
+    const boxesData = await boxesTensor.array() as number[][][][]
     for (let row = 0; row < numCells; row ++) {
       for (let col = 0; col < numCells; col ++) {
         for (let anchor = 0; anchor < numBoxes; anchor ++) {

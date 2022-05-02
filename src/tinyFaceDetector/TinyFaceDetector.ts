@@ -2,7 +2,7 @@ import * as tf from '@tensorflow/tfjs-core';
 
 import { FaceDetection, Point } from '../classes';
 import { ParamMapping } from '../common';
-import { TNetInput } from '../dom';
+import { TNetInput } from '../core';
 import { ITinyYolov2Options } from '../tinyYolov2';
 import { TinyYolov2Base } from '../tinyYolov2/TinyYolov2Base';
 import { TinyYolov2NetParams } from '../tinyYolov2/types';

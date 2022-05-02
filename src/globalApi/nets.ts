@@ -2,7 +2,7 @@ import { AgeGenderNet } from '../ageGenderNet/AgeGenderNet';
 import { AgeAndGenderPrediction } from '../ageGenderNet/types';
 import { FaceDetection } from '../classes/FaceDetection';
 import { FaceLandmarks68 } from '../classes/FaceLandmarks68';
-import { TNetInput } from '../dom';
+import { TNetInput } from '../core';
 import { FaceExpressionNet } from '../faceExpressionNet/FaceExpressionNet';
 import { FaceExpressions } from '../faceExpressionNet/FaceExpressions';
 import { FaceLandmark68Net } from '../faceLandmarkNet/FaceLandmark68Net';

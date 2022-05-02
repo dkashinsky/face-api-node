@@ -1,7 +1,7 @@
 import * as tf from '@tensorflow/tfjs-core';
 
 import { fullyConnectedLayer } from '../common/fullyConnectedLayer';
-import { NetInput } from '../dom';
+import { NetInput } from '../core';
 import {
   FaceFeatureExtractorParams,
   IFaceFeatureExtractor,

@@ -36,8 +36,8 @@ export function round(num: number, prec: number = 2) {
   return Math.floor(num * f) / f
 }
 
-export function isDimensions(obj: any): boolean {
-  return obj && obj.width && obj.height
+export function isDimensions(obj: any): obj is IDimensions {
+  return obj && typeof obj.width === 'number' && typeof obj.height === 'number'
 }
 
 export function computeReshapedDimensions({ width, height }: IDimensions, inputSize: number) {
@@ -60,4 +60,8 @@ export function isValidNumber(num: any) {
 
 export function isValidProbablitiy(num: any) {
   return isValidNumber(num) && 0 <= num && num <= 1.0
+}
+
+export function isNotNull<T>(obj: T | null): obj is T {
+  return obj !== null;
 }

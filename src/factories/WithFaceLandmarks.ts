@@ -13,10 +13,10 @@ export type WithFaceLandmarks<
 }
 
 export function isWithFaceLandmarks(obj: any): obj is WithFaceLandmarks<WithFaceDetection<{}>, FaceLandmarks> {
-  return isWithFaceDetection(obj)
-    && obj['landmarks'] instanceof FaceLandmarks
+  return obj['landmarks'] instanceof FaceLandmarks
     && obj['unshiftedLandmarks'] instanceof FaceLandmarks
     && obj['alignedRect'] instanceof FaceDetection
+    && isWithFaceDetection(obj)
 }
 
 export function extendWithFaceLandmarks<

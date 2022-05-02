@@ -1,4 +1,4 @@
-import { TNetInput } from '../dom';
+import { TNetInput } from '../core';
 import { WithFaceDescriptor, WithFaceDetection, WithFaceLandmarks } from '../factories';
 import { SsdMobilenetv1Options } from '../ssdMobilenetv1';
 import { ITinyYolov2Options, TinyYolov2Options } from '../tinyYolov2';

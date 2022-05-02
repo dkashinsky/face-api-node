@@ -112,7 +112,7 @@ npm i face-api.js
 
 # face-api.js for Nodejs
 
-We can use the equivalent API in a nodejs environment by polyfilling some browser specifics, such as HTMLImageElement, HTMLCanvasElement and ImageData. The easiest way to do so is by installing the node-canvas package.
+We can use the equivalent API in a nodejs environment by polyfilling some browser specifics, such as HTMLImageElement, HTMLCanvasElement. The easiest way to do so is by installing the node-canvas package.
 
 Alternatively you can simply construct your own tensors from image data and pass tensors as inputs to the API.
 
@@ -129,15 +129,7 @@ Now we simply monkey patch the environment to use the polyfills:
 // not required, but will speed up things drastically (python required)
 import '@tensorflow/tfjs-node';
 
-// implements nodejs wrappers for HTMLCanvasElement, HTMLImageElement, ImageData
-import * as canvas from 'canvas';
-
 import * as faceapi from 'face-api.js';
-
-// patch nodejs environment, we need to provide an implementation of
-// HTMLCanvasElement and HTMLImageElement
-const { Canvas, Image, ImageData } = canvas
-faceapi.env.monkeyPatch({ Canvas, Image, ImageData })
 ```
 
 <a name="getting-started"></a>
@@ -208,22 +200,6 @@ net.load(weights)
 <a name="getting-high-level-api"></a>
 
 ## High Level API
-
-In the following **input** can be an HTML img, video or canvas element or the id of that element.
-
-``` html
-<img id="myImg" src="images/example.png" />
-<video id="myVideo" src="media/example.mp4" />
-<canvas id="myCanvas" />
-```
-
-``` javascript
-const input = document.getElementById('myImg')
-// const input = document.getElementById('myVideo')
-// const input = document.getElementById('myCanvas')
-// or simply:
-// const input = 'myImg'
-```
 
 ### Detecting Faces
 
@@ -437,116 +413,6 @@ const labeledDescriptors = [
 const faceMatcher = new faceapi.FaceMatcher(labeledDescriptors)
 ```
 
-<a name="getting-started-displaying-detection-results"></a>
-
-## Displaying Detection Results
-
-Preparing the overlay canvas:
-
-``` javascript
-const displaySize = { width: input.width, height: input.height }
-// resize the overlay canvas to the input dimensions
-const canvas = document.getElementById('overlay')
-faceapi.matchDimensions(canvas, displaySize)
-```
-
-face-api.js predefines some highlevel drawing functions, which you can utilize:
-
-``` javascript
-/* Display detected face bounding boxes */
-const detections = await faceapi.detectAllFaces(input)
-// resize the detected boxes in case your displayed image has a different size than the original
-const resizedDetections = faceapi.resizeResults(detections, displaySize)
-// draw detections into the canvas
-faceapi.draw.drawDetections(canvas, resizedDetections)
-
-/* Display face landmarks */
-const detectionsWithLandmarks = await faceapi
-  .detectAllFaces(input)
-  .withFaceLandmarks()
-// resize the detected boxes and landmarks in case your displayed image has a different size than the original
-const resizedResults = faceapi.resizeResults(detectionsWithLandmarks, displaySize)
-// draw detections into the canvas
-faceapi.draw.drawDetections(canvas, resizedResults)
-// draw the landmarks into the canvas
-faceapi.draw.drawFaceLandmarks(canvas, resizedResults)
-
-
-/* Display face expression results */
-const detectionsWithExpressions = await faceapi
-  .detectAllFaces(input)
-  .withFaceLandmarks()
-  .withFaceExpressions()
-// resize the detected boxes and landmarks in case your displayed image has a different size than the original
-const resizedResults = faceapi.resizeResults(detectionsWithExpressions, displaySize)
-// draw detections into the canvas
-faceapi.draw.drawDetections(canvas, resizedResults)
-// draw a textbox displaying the face expressions with minimum probability into the canvas
-const minProbability = 0.05
-faceapi.draw.drawFaceExpressions(canvas, resizedResults, minProbability)
-```
-
-You can also draw boxes with custom text ([DrawBox](https://github.com/justadudewhohacks/tfjs-image-recognition-base/blob/master/src/draw/DrawBox.ts)):
-
-``` javascript
-const box = { x: 50, y: 50, width: 100, height: 100 }
-// see DrawBoxOptions below
-const drawOptions = {
-  label: 'Hello I am a box!',
-  lineWidth: 2
-}
-const drawBox = new faceapi.draw.DrawBox(box, drawOptions)
-drawBox.draw(document.getElementById('myCanvas'))
-```
-
-DrawBox drawing options:
-
-``` javascript
-export interface IDrawBoxOptions {
-  boxColor?: string
-  lineWidth?: number
-  drawLabelOptions?: IDrawTextFieldOptions
-  label?: string
-}
-```
-
-Finally you can draw custom text fields ([DrawTextField](https://github.com/justadudewhohacks/tfjs-image-recognition-base/blob/master/src/draw/DrawTextField.ts)):
-
-``` javascript
-const text = [
-  'This is a textline!',
-  'This is another textline!'
-]
-const anchor = { x: 200, y: 200 }
-// see DrawTextField below
-const drawOptions = {
-  anchorPosition: 'TOP_LEFT',
-  backgroundColor: 'rgba(0, 0, 0, 0.5)'
-}
-const drawBox = new faceapi.draw.DrawTextField(text, anchor, drawOptions)
-drawBox.draw(document.getElementById('myCanvas'))
-```
-
-DrawTextField drawing options:
-
-``` javascript
-export interface IDrawTextFieldOptions {
-  anchorPosition?: AnchorPosition
-  backgroundColor?: string
-  fontColor?: string
-  fontSize?: number
-  fontStyle?: string
-  padding?: number
-}
-
-export enum AnchorPosition {
-  TOP_LEFT = 'TOP_LEFT',
-  TOP_RIGHT = 'TOP_RIGHT',
-  BOTTOM_LEFT = 'BOTTOM_LEFT',
-  BOTTOM_RIGHT = 'BOTTOM_RIGHT'
-}
-```
-
 <a name="getting-started-face-detection-options"></a>
 
 ## Face Detection Options
@@ -700,9 +566,9 @@ const descriptor = await faceapi.computeFaceDescriptor(alignedFaceImage)
 const regionsToExtract = [
   new faceapi.Rect(0, 0, 100, 100)
 ]
-// actually extractFaces is meant to extract face regions from bounding boxes
+// actually extractFaceTensors is meant to extract face regions from bounding boxes
 // but you can also use it to extract any other region
-const canvases = await faceapi.extractFaces(input, regionsToExtract)
+const faceTensors = await faceapi.extractFaceTensors(input, regionsToExtract)
 ```
 
 ### Euclidean Distance
@@ -729,49 +595,17 @@ const leftEyeBbrow = landmarks.getLeftEyeBrow()
 const rightEyeBrow = landmarks.getRightEyeBrow()
 ```
 
-### Fetch and Display Images from an URL
-
-``` html
-<img id="myImg" src="">
-```
-
-``` javascript
-const image = await faceapi.fetchImage('/images/example.png')
-
-console.log(image instanceof HTMLImageElement) // true
-
-// displaying the fetched image content
-const myImg = document.getElementById('myImg')
-myImg.src = image.src
-```
-
 ### Fetching JSON
 
 ``` javascript
 const json = await faceapi.fetchJson('/files/example.json')
 ```
 
-### Creating an Image Picker
 
-``` html
-<img id="myImg" src="">
-<input id="myFileUpload" type="file" onchange="uploadImage()" accept=".jpg, .jpeg, .png">
-```
-
-``` javascript
-async function uploadImage() {
-  const imgFile = document.getElementById('myFileUpload').files[0]
-  // create an HTMLImageElement from a Blob
-  const img = await faceapi.bufferToImage(imgFile)
-  document.getElementById('myImg').src = img.src
-}
-```
-
-### Creating a Canvas Element from an Image or Video Element
+### Creating a Canvas Element from an Image
 
 ``` html
 <img id="myImg" src="images/example.png" />
-<video id="myVideo" src="media/example.mp4" />
 ```
 
 ``` javascript

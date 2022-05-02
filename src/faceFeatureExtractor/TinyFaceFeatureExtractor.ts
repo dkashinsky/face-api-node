@@ -1,6 +1,6 @@
 import * as tf from '@tensorflow/tfjs-core';
 
-import { NetInput, TNetInput, toNetInput } from '../dom';
+import { NetInput, TNetInput, toNetInput } from '../core';
 import { NeuralNetwork } from '../NeuralNetwork';
 import { normalize } from '../ops';
 import { denseBlock3 } from './denseBlock';

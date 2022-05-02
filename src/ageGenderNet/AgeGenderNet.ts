@@ -1,4 +1,4 @@
-import * as tf from '@tensorflow/tfjs-core';
+import * as tf from '@tensorflow/tfjs-node';
 
 import { fullyConnectedLayer } from '../common/fullyConnectedLayer';
 import { seperateWeightMaps } from '../faceProcessor/util';
@@ -7,7 +7,7 @@ import { extractParams } from './extractParams';
 import { extractParamsFromWeigthMap } from './extractParamsFromWeigthMap';
 import { AgeAndGenderPrediction, Gender, NetOutput, NetParams } from './types';
 import { NeuralNetwork } from '../NeuralNetwork';
-import { NetInput, TNetInput, toNetInput } from '../dom';
+import { NetInput, TNetInput, toNetInput } from '../core';
 
 export class AgeGenderNet extends NeuralNetwork<NetParams> {
 

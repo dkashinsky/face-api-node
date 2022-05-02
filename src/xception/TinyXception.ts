@@ -1,7 +1,7 @@
 import * as tf from '@tensorflow/tfjs-core';
 
 import { ConvParams, depthwiseSeparableConv } from '../common';
-import { NetInput, TNetInput, toNetInput } from '../dom';
+import { NetInput, TNetInput, toNetInput } from '../core';
 import { NeuralNetwork } from '../NeuralNetwork';
 import { normalize } from '../ops';
 import { range } from '../utils';

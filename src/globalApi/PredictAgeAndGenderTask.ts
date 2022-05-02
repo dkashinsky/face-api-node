@@ -1,7 +1,7 @@
 import * as tf from '@tensorflow/tfjs-core';
 
 import { AgeAndGenderPrediction } from '../ageGenderNet/types';
-import { TNetInput } from '../dom';
+import { TNetInput } from '../core';
 import { extendWithAge, WithAge } from '../factories/WithAge';
 import { WithFaceDetection } from '../factories/WithFaceDetection';
 import { WithFaceLandmarks } from '../factories/WithFaceLandmarks';
@@ -21,7 +21,7 @@ export class PredictAgeAndGenderTaskBase<TReturn, TParentReturn> extends Composa
   constructor(
     protected parentTask: ComposableTask<TParentReturn> | Promise<TParentReturn>,
     protected input: TNetInput,
-    protected extractedFaces?: Array<HTMLCanvasElement | tf.Tensor3D>
+    protected extractedFaces?: Array<tf.Tensor3D>
   ) {
     super()
   }

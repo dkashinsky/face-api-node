@@ -1,6 +1,6 @@
 import * as tf from '@tensorflow/tfjs-core';
 
-import { TNetInput } from '../dom';
+import { TNetInput } from '../core';
 import { FaceExpressions } from '../faceExpressionNet/FaceExpressions';
 import { WithFaceDetection } from '../factories/WithFaceDetection';
 import { extendWithFaceExpressions, WithFaceExpressions } from '../factories/WithFaceExpressions';
@@ -20,7 +20,7 @@ export class PredictFaceExpressionsTaskBase<TReturn, TParentReturn> extends Comp
   constructor(
     protected parentTask: ComposableTask<TParentReturn> | Promise<TParentReturn>,
     protected input: TNetInput,
-    protected extractedFaces?: Array<HTMLCanvasElement | tf.Tensor3D>
+    protected extractedFaces?: Array<tf.Tensor3D>
   ) {
     super()
   }

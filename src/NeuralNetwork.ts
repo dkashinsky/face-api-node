@@ -2,15 +2,14 @@ import * as tf from '@tensorflow/tfjs-core';
 
 import { ParamMapping } from './common';
 import { getModelUris } from './common/getModelUris';
-import { loadWeightMap } from './dom';
-import { env } from './env';
+import { fetchFile, fetchJson, fetchNetWeights, loadWeightMap } from './core';
 
 export abstract class NeuralNetwork<TNetParams> {
 
   protected _params: TNetParams | undefined = undefined
   protected _paramMappings: ParamMapping[] = []
 
-  constructor(protected _name: string) {}
+  constructor(protected _name: string) { }
 
   public get params(): TNetParams | undefined { return this._params }
   public get paramMappings(): ParamMapping[] { return this._paramMappings }
@@ -97,16 +96,14 @@ export abstract class NeuralNetwork<TNetParams> {
       throw new Error(`${this._name}.loadFromDisk - expected model file path`)
     }
 
-    const { readFile } = env.getEnv()
-
     const { manifestUri, modelBaseUri } = getModelUris(filePath, this.getDefaultModelName())
 
     const fetchWeightsFromDisk = (filePaths: string[]) => Promise.all(
-      filePaths.map(filePath => readFile(filePath).then(buf => buf.buffer))
+      filePaths.map(filePath => fetchNetWeights(filePath))
     )
     const loadWeights = tf.io.weightsLoaderFactory(fetchWeightsFromDisk)
 
-    const manifest = JSON.parse((await readFile(manifestUri)).toString())
+    const manifest = await fetchJson<tf.io.WeightsManifestConfig>(manifestUri)
     const weightMap = await loadWeights(manifest, modelBaseUri)
 
     this.loadFromWeightMap(weightMap)

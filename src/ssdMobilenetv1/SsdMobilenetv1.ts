@@ -2,7 +2,7 @@ import * as tf from '@tensorflow/tfjs-core';
 
 import { Rect } from '../classes';
 import { FaceDetection } from '../classes/FaceDetection';
-import { NetInput, TNetInput, toNetInput } from '../dom';
+import { NetInput, TNetInput, toNetInput } from '../core';
 import { NeuralNetwork } from '../NeuralNetwork';
 import { extractParams } from './extractParams';
 import { extractParamsFromWeigthMap } from './extractParamsFromWeigthMap';

@@ -33,6 +33,7 @@
   "devDependencies": {
     "@tensorflow/tfjs-node": "^3.16.0",
     "@types/jasmine": "^3.5.9",
+    "@types/node": "^16.11.33",
     "jasmine": "^3.5.0",
     "jasmine-core": "^3.5.0",
     "karma": "^4.4.1",

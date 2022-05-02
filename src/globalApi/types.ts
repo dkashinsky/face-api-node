@@ -1,5 +1,5 @@
 import { FaceDetection } from '../classes/FaceDetection';
-import { TNetInput } from '../dom';
+import { TNetInput } from '../core';
 import { SsdMobilenetv1Options } from '../ssdMobilenetv1/SsdMobilenetv1Options';
 import { TinyFaceDetectorOptions } from '../tinyFaceDetector/TinyFaceDetectorOptions';
 import { TinyYolov2Options } from '../tinyYolov2';

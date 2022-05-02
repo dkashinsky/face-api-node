@@ -2,7 +2,7 @@ import * as tf from '@tensorflow/tfjs-core';
 
 import { IDimensions, Point } from '../classes';
 import { FaceLandmarks68 } from '../classes/FaceLandmarks68';
-import { NetInput, TNetInput, toNetInput } from '../dom';
+import { NetInput, TNetInput, toNetInput } from '../core';
 import { FaceFeatureExtractorParams, TinyFaceFeatureExtractorParams } from '../faceFeatureExtractor/types';
 import { FaceProcessor } from '../faceProcessor/FaceProcessor';
 import { isEven } from '../utils';
