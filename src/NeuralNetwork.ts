@@ -1,8 +1,9 @@
-import * as tf from '@tensorflow/tfjs-core';
+import * as tf from '@tensorflow/tfjs-node';
+import type { WeightsManifestConfig} from '@tensorflow/tfjs-core/dist/io/types'
 
 import { ParamMapping } from './common';
 import { getModelUris } from './common/getModelUris';
-import { fetchFile, fetchJson, fetchNetWeights, loadWeightMap } from './core';
+import { fetchJson, fetchNetWeights, loadWeightMap } from './core';
 
 export abstract class NeuralNetwork<TNetParams> {
 
@@ -103,7 +104,7 @@ export abstract class NeuralNetwork<TNetParams> {
     )
     const loadWeights = tf.io.weightsLoaderFactory(fetchWeightsFromDisk)
 
-    const manifest = await fetchJson<tf.io.WeightsManifestConfig>(manifestUri)
+    const manifest = await fetchJson<WeightsManifestConfig>(manifestUri)
     const weightMap = await loadWeights(manifest, modelBaseUri)
 
     this.loadFromWeightMap(weightMap)

@@ -1,4 +1,4 @@
-import * as tf from '@tensorflow/tfjs-core';
+import * as tf from '@tensorflow/tfjs-node';
 
 import { NetInput, TNetInput, toNetInput } from '../core';
 import { FaceFeatureExtractor } from '../faceFeatureExtractor/FaceFeatureExtractor';

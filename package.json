@@ -7,8 +7,7 @@
   "scripts": {
     "rollup-min": "rollup -c rollup.config.js --environment minify:true",
     "rollup": "rollup -c rollup.config.js",
-    "tsc": "tsc",
-    "build": "rimraf ./build && npm run tsc",
+    "build": "rimraf ./build && tsc",
     "test": "npm run test-browser && npm run test-node",
     "test-browser": "karma start --single-run",
     "test-node": "ts-node -r ./test/env.node.ts node_modules/jasmine/bin/jasmine --config=jasmine-node.js",
@@ -48,9 +47,5 @@
     "rollup-plugin-uglify": "^6.0.4",
     "ts-node": "^10.7.0",
     "typescript": "^4.6.4"
-  },
-  "dependencies": {
-    "@tensorflow/tfjs-core": "^3.16.0",
-    "tslib": "^2.4.0"
   }
 }
