@@ -11,8 +11,8 @@ describeWithBackend('faceLandmark68Net, uncompressed', () => {
   let faceLandmarkPositionsRect: Point[]
 
   beforeAll(async () => {
-    imgEl1 = tf.node.decodePng(await nodeTestEnv.loadImage('test/images/face1.png'))
-    imgElRect = tf.node.decodePng(await nodeTestEnv.loadImage('test/images/face_rectangular.png'))
+    imgEl1 = tf.node.decodePng(await nodeTestEnv.loadImage('test/images/face1.png'), 3)
+    imgElRect = tf.node.decodePng(await nodeTestEnv.loadImage('test/images/face_rectangular.png'), 3)
     faceLandmarkPositions1 = await nodeTestEnv.loadJson<Point[]>('test/data/faceLandmarkPositions1.json')
     faceLandmarkPositionsRect = await nodeTestEnv.loadJson<Point[]>('test/data/faceLandmarkPositionsRect.json')
   })
