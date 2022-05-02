@@ -1,13 +1,17 @@
-import { createCanvasFromMedia, extractFaceTensors, Rect, tf } from '../../../src';
-import { getTestEnv } from '../../env';
+import { extractFaceTensors, Rect, tf } from '../../../src';
 import { describeWithBackend } from '../../utils';
+import { nodeTestEnv } from '../../env';
 
 describeWithBackend('extractFaceTensors', () => {
 
   let imgTensor: tf.Tensor3D
 
   beforeAll(async () => {
-    imgTensor = tf.browser.fromPixels(createCanvasFromMedia(await getTestEnv().loadImage('test/images/face1.png')))
+    imgTensor = tf.node.decodePng(await nodeTestEnv.loadImage('test/images/face1.png'))
+  })
+
+  afterAll(async () => {
+    imgTensor.dispose()
   })
 
   describe('extracts tensors', () => {
@@ -18,7 +22,8 @@ describeWithBackend('extractFaceTensors', () => {
 
       expect(tensors.length).toEqual(1)
       expect(tensors[0].shape).toEqual([60, 50, 3])
-      tensors[0].dispose()
+
+      tensors.forEach(t => t.dispose())
     })
 
     it('multiple boxes', async () => {
@@ -31,8 +36,8 @@ describeWithBackend('extractFaceTensors', () => {
       expect(tensors.length).toEqual(2)
       expect(tensors[0].shape).toEqual([60, 50, 3])
       expect(tensors[1].shape).toEqual([80, 70, 3])
-      tensors[0].dispose()
-      tensors[1].dispose()
+
+      tensors.forEach(t => t.dispose())
     })
 
   })
@@ -44,7 +49,8 @@ describeWithBackend('extractFaceTensors', () => {
       const tensors = await extractFaceTensors(imgTensor, [rect])
 
       expect(tensors[0].shape).toEqual([100, 100, 3])
-      tensors[0].dispose()
+
+      tensors.forEach(t => t.dispose())
     })
 
     it('clips bottom right corner', async () => {
@@ -52,7 +58,8 @@ describeWithBackend('extractFaceTensors', () => {
       const tensors = await extractFaceTensors(imgTensor, [rect])
 
       expect(tensors[0].shape).toEqual([100, 100, 3])
-      tensors[0].dispose()
+
+      tensors.forEach(t => t.dispose())
     })
 
     it('clips upper left and bottom right corners', async () => {
@@ -60,7 +67,8 @@ describeWithBackend('extractFaceTensors', () => {
       const tensors = await extractFaceTensors(imgTensor, [rect])
 
       expect(tensors[0].shape).toEqual([imgTensor.shape[1], imgTensor.shape[0], 3])
-      tensors[0].dispose()
+
+      tensors.forEach(t => t.dispose())
     })
 
   })

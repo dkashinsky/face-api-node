@@ -1,7 +1,7 @@
 import { NeuralNetwork } from '../src';
 
 export type TestEnv = {
-  loadImage: (uri: string) => Promise<HTMLImageElement>
+  loadImage: <T> (uri: string) => Promise<Buffer>,
   loadJson: <T> (uri: string) => Promise<T>
   initNet: <TNet extends NeuralNetwork<any>>(
     net: TNet,
