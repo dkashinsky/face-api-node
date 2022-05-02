@@ -6,7 +6,7 @@ import { isNotNull } from '../utils';
  *
  * @param imgTensor The image tensor.
  * @param isCenterImage (optional, default: false) If true, add an equal amount of padding on
- * both sides of the minor dimension oof the image.
+ * both sides of the minor dimension of the image.
  * @returns The padded tensor with width === height.
  */
 export function padToSquare(
@@ -24,8 +24,8 @@ export function padToSquare(
     const paddingAmount = Math.round(dimDiff * (isCenterImage ? 0.5 : 1))
     const paddingAxis = height > width ? 2 : 1
 
-    const createPaddingTensor = (paddingAmount: number): tf.Tensor => {
-      const paddingTensorShape = imgTensor.shape.slice()
+    const createPaddingTensor = (paddingAmount: number): tf.Tensor4D => {
+      const paddingTensorShape = imgTensor.shape.slice() as  typeof imgTensor.shape
       paddingTensorShape[paddingAxis] = paddingAmount
       return tf.fill(paddingTensorShape, 0)
     }
@@ -37,13 +37,10 @@ export function padToSquare(
       ? createPaddingTensor(remainingPaddingAmount)
       : null
 
-    const tensorsToStack = [
-      paddingTensorPrepend,
-      imgTensor,
-      paddingTensorAppend
-    ]
+    const tensorsToStack = [paddingTensorPrepend, imgTensor, paddingTensorAppend]
       .filter(isNotNull)
-      .map((t: tf.Tensor) => t.toFloat()) as tf.Tensor4D[]
+      .map((t: tf.Tensor4D) => t.toFloat())
+
     return tf.concat(tensorsToStack, paddingAxis)
   })
 }

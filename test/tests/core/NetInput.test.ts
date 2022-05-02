@@ -9,7 +9,7 @@ describe('NetInput', () => {
   let imgTensor: tf.Tensor3D
 
   beforeAll(async () => {
-    imgTensor = tf.node.decodePng(await nodeTestEnv.loadImage('test/images/face1.png'))
+    imgTensor = tf.node.decodePng(await nodeTestEnv.loadImage('test/images/face1.png'), 3)
   })
 
   afterAll(async () => {
@@ -18,22 +18,26 @@ describe('NetInput', () => {
 
   describe('toBatchTensor', () => {
 
-    it('Tensor3D, batchSize === 1', () => tf.tidy(() => {
-      const netInput = new NetInput([imgTensor])
-      const batchTensor = netInput.toBatchTensor(100)
-      expect(batchTensor.shape).toEqual([1, 100, 100, 3])
-    }))
+    it('Tensor3D, batchSize === 1', () => {
+      tf.tidy(() => {
+        const netInput = new NetInput([imgTensor])
+        const batchTensor = netInput.toBatchTensor(100)
+        expect(batchTensor.shape).toEqual([1, 100, 100, 3])
+      })
+    })
 
-    it('Tensor3D, batchSize === 4', () => tf.tidy(() => {
-      const netInput = new NetInput([
-        imgTensor,
-        imgTensor,
-        imgTensor,
-        imgTensor
-      ])
-      const batchTensor = netInput.toBatchTensor(100)
-      expect(batchTensor.shape).toEqual([4, 100, 100, 3])
-    }))
+    it('Tensor3D, batchSize === 4', () => {
+      tf.tidy(() => {
+        const netInput = new NetInput([
+          imgTensor,
+          imgTensor,
+          imgTensor,
+          imgTensor
+        ])
+        const batchTensor = netInput.toBatchTensor(100)
+        expect(batchTensor.shape).toEqual([4, 100, 100, 3])
+      })
+    })
 
   })
 

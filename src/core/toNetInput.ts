@@ -40,5 +40,5 @@ export async function toNetInput(inputs: TNetInput): Promise<NetInput> {
     return input;
   })
 
-  return new NetInput(tensors, Array.isArray(inputs))
+  return Promise.resolve(new NetInput(tensors, Array.isArray(inputs)))
 }

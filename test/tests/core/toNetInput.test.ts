@@ -21,6 +21,7 @@ describe('toNetInput', () => {
 
     it('from Tensor3D', async () => {
       const netInput = await toNetInput(imgTensor)
+
       expect(netInput instanceof NetInput).toBe(true)
       expect(netInput.batchSize).toEqual(1)
     })
@@ -28,8 +29,11 @@ describe('toNetInput', () => {
     it('from Tensor4D', async () => {
       const img4d = imgTensor.expandDims<tf.Tensor4D>();
       const netInput = await toNetInput(img4d)
+
       expect(netInput instanceof NetInput).toBe(true)
       expect(netInput.batchSize).toEqual(1)
+
+      img4d.dispose()
     })
 
     it('from mixed media array', async () => {
@@ -38,31 +42,22 @@ describe('toNetInput', () => {
         imgTensor,
         img4d,
       ])
+
       expect(netInput instanceof NetInput).toBe(true)
-      expect(netInput.batchSize).toEqual(3)
+      expect(netInput.batchSize).toEqual(2)
+
+      img4d.dispose()
     })
 
   })
 
   describe('invalid args', () => {
     it('undefined', async () => {
-      let errorMessage
-      try {
-        await toNetInput(undefined as any)
-      } catch (error) {
-        errorMessage = error.message;
-      }
-      expect(errorMessage).toBe('toNetInput - expected media to be of type HTMLImageElement | HTMLVideoElement | HTMLCanvasElement | tf.Tensor3D, or to be an element id')
+      await expect(toNetInput(undefined as any)).rejects.toThrowError('toNetInput - expected to be of type tf.Tensor3D or tf.Tensor4D')
     })
 
     it('empty array', async () => {
-      let errorMessage
-      try {
-        await toNetInput([])
-      } catch (error) {
-        errorMessage = error.message;
-      }
-      expect(errorMessage).toBe('toNetInput - empty array passed as input')
+      await expect(toNetInput([])).rejects.toThrowError('toNetInput - empty array passed as input')
     })
 
   })

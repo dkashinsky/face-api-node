@@ -1,16 +1,18 @@
-import { readFile } from 'fs/promises';
 import * as path from 'path';
 
-import { NeuralNetwork } from '../src';
+import { fetchFile, fetchJson, fetchNetWeights, NeuralNetwork } from '../src';
 import { TestEnv } from './Environment';
 
+async function loadNetWeights(uri: string): Promise<Float32Array> {
+  return await fetchNetWeights(path.resolve(__dirname, '../', uri))
+}
+
 async function loadImage(uri: string): Promise<Buffer> {
-  return await readFile(path.resolve(__dirname, '../', uri))
+  return await fetchFile(path.resolve(__dirname, '../', uri))
 }
 
 async function loadJson<T>(uri: string): Promise<T> {
-  const content = await readFile(path.resolve(__dirname, '../', uri), 'utf8')
-  return JSON.parse(content)
+  return await fetchJson(path.resolve(__dirname, '../', uri))
 }
 
 export async function initNet<TNet extends NeuralNetwork<any>>(net: TNet) {
@@ -18,6 +20,7 @@ export async function initNet<TNet extends NeuralNetwork<any>>(net: TNet) {
 }
 
 export const nodeTestEnv: TestEnv = {
+  loadNetWeights,
   loadImage,
   loadJson,
   initNet,
