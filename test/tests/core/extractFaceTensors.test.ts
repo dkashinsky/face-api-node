@@ -7,7 +7,7 @@ describeWithBackend('extractFaceTensors', () => {
   let imgTensor: tf.Tensor3D
 
   beforeAll(async () => {
-    imgTensor = tf.node.decodePng(await nodeTestEnv.loadImage('test/images/face1.png'))
+    imgTensor = tf.node.decodePng(await nodeTestEnv.loadImage('test/images/face1.png'), 3)
   })
 
   afterAll(async () => {
