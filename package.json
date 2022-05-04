@@ -1,6 +1,6 @@
 {
-  "name": "face-api-node",
-  "version": "0.22.2",
+  "name": "@fsdk/face-api-node",
+  "version": "0.22.3",
   "description": "JavaScript API for face detection and face recognition with tensorflow.js",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -12,14 +12,19 @@
     "test": "jest"
   },
   "keywords": [
-    "face",
-    "detection",
-    "recognition",
-    "tensorflow",
-    "tf"
+    "face detection",
+    "face recognition",
+    "tensorflow"
   ],
-  "author": "justadudewhohacks",
+  "author": "Dmitry Kashinsky",
   "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dkashinsky/face-api-node/issues"
+  },
+  "homepage": "https://github.com/dkashinsky/face-api-node#readme",
+  "peerDependencies": {
+    "@tensorflow/tfjs-node": "^3.0.0"
+  },
   "devDependencies": {
     "@tensorflow/tfjs-node": "^3.16.0",
     "@types/jest": "^27.4.1",
