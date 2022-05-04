@@ -1,7 +1,6 @@
 import { isValidProbablitiy } from '../utils';
-import { IBoundingBox } from './BoundingBox';
+import { IBoundingBox, IRect } from "./types";
 import { LabeledBox } from './LabeledBox';
-import { IRect } from './Rect';
 
 export class PredictedBox extends LabeledBox {
 

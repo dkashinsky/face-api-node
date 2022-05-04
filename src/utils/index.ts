@@ -1,7 +1,6 @@
 import * as tf from '@tensorflow/tfjs-node';
 
-import { Point } from '../classes';
-import { Dimensions, IDimensions } from '../classes/Dimensions';
+import { Dimensions, IDimensions, Point } from '../classes';
 
 export function isTensor(tensor: any, dim: number) {
   return tensor instanceof tf.Tensor && tensor.shape.length === dim

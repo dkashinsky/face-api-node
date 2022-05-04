@@ -1,7 +1,4 @@
-export interface IPoint {
-  x: number
-  y: number
-}
+import { IPoint } from "./types"
 
 export class Point implements IPoint {
   private _x: number

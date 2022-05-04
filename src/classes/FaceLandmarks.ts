@@ -1,11 +1,11 @@
 import { minBbox } from '../ops';
 import { getCenterPoint } from '../utils';
-import { IBoundingBox } from './BoundingBox';
+import { IBoundingBox, IDimensions, IRect } from "./types";
 import { Box } from './Box';
-import { Dimensions, IDimensions } from './Dimensions';
+import { Dimensions } from './Dimensions';
 import { FaceDetection } from './FaceDetection';
 import { Point } from './Point';
-import { IRect, Rect } from './Rect';
+import { Rect } from './Rect';
 
 // face alignment constants
 const relX = 0.5

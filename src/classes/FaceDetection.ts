@@ -1,5 +1,5 @@
 import { Box } from './Box';
-import { IDimensions } from './Dimensions';
+import { IDimensions } from './types';
 import { ObjectDetection } from './ObjectDetection';
 import { Rect } from './Rect';
 

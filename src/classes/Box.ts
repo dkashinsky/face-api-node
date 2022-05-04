@@ -1,10 +1,8 @@
 import { isDimensions, isValidNumber } from '../utils';
-import { IBoundingBox } from './BoundingBox';
-import { IDimensions } from './Dimensions';
+import { IBoundingBox, IDimensions, IRect } from "./types";
 import { Point } from './Point';
-import { IRect } from './Rect';
 
-export class Box<BoxType = any> implements IBoundingBox, IRect {
+export class Box implements IBoundingBox, IRect {
 
   public static isRect(rect: any): boolean {
     return !!rect && [rect.x, rect.y, rect.width, rect.height].every(isValidNumber)
@@ -61,19 +59,19 @@ export class Box<BoxType = any> implements IBoundingBox, IRect {
   public get bottomLeft(): Point { return new Point(this.left, this.bottom) }
   public get bottomRight(): Point { return new Point(this.right, this.bottom) }
 
-  public round(): Box<BoxType> {
+  public round(): Box {
     const [x, y, width, height] = [this.x, this.y, this.width, this.height]
       .map(val => Math.round(val))
     return new Box({ x, y, width, height })
   }
 
-  public floor(): Box<BoxType> {
+  public floor(): Box {
     const [x, y, width, height] = [this.x, this.y, this.width, this.height]
       .map(val => Math.floor(val))
     return new Box({ x, y, width, height })
   }
 
-  public toSquare(): Box<BoxType> {
+  public toSquare(): Box {
     let { x, y, width, height } = this
     const diff = Math.abs(width - height)
     if (width < height) {
@@ -88,7 +86,7 @@ export class Box<BoxType = any> implements IBoundingBox, IRect {
     return new Box({ x, y, width, height })
   }
 
-  public rescale(s: IDimensions | number): Box<BoxType> {
+  public rescale(s: IDimensions | number): Box {
     const scaleX = isDimensions(s) ? s.width : s
     const scaleY = isDimensions(s) ? s.height : s
     return new Box({
@@ -99,7 +97,7 @@ export class Box<BoxType = any> implements IBoundingBox, IRect {
     })
   }
 
-  public pad(padX: number, padY: number): Box<BoxType> {
+  public pad(padX: number, padY: number): Box {
     let [x, y, width, height] = [
       this.x - (padX / 2),
       this.y - (padY / 2),
@@ -109,7 +107,7 @@ export class Box<BoxType = any> implements IBoundingBox, IRect {
     return new Box({ x, y, width, height })
   }
 
-  public clipAtImageBorders(imgWidth: number, imgHeight: number): Box<BoxType> {
+  public clipAtImageBorders(imgWidth: number, imgHeight: number): Box {
     const { x, y, right, bottom } = this
     const clippedX = Math.max(x, 0)
     const clippedY = Math.max(y, 0)
@@ -122,7 +120,7 @@ export class Box<BoxType = any> implements IBoundingBox, IRect {
     return (new Box({ x: clippedX, y: clippedY, width: clippedWidth, height: clippedHeight})).floor()
   }
 
-  public shift(sx: number, sy: number): Box<BoxType> {
+  public shift(sx: number, sy: number): Box {
     const { width, height } = this
     const x = this.x + sx
     const y = this.y + sy
